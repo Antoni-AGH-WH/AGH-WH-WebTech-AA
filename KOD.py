@@ -51,11 +51,16 @@ async def find_student_by_id(item_id: int):
     return {"Student ID": STUDENTS[item_id]}
 
 @app.post("/STUDENTS")
+#Program pobiera 3 informacje: ID którego studenta ma zmodyfikować, oraz nowe imie i nazwisko
 async def modify_student(item_id: int, first_name:str, last_name: str):
+    #jeżeli nie ma ID - wywala error
     if item_id not in STUDENTS:
         raise HTTPException(status_code=404, detail="Student not found")
+    #tworzymy nowego studenta, który zastąpi starego
     new_student = StudentUpdateSchema(first_name = first_name, last_name = last_name, id=item_id)
+    #nowe dane studenta zastępują dane stare
     STUDENTS[item_id] = new_student
+    #w przypadku sukcesu - wyświetlają się nowe dane
     return {"Student ID:", STUDENTS[item_id]}
 
 #uvicorn KOD:app --reload
